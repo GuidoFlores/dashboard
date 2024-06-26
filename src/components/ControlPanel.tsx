@@ -5,13 +5,17 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 export default function ControlPanel() {
 
     {/* Variable de estado y función de actualización */}
 
     let [selected, setSelected] = useState(-1)
+
+     {/* Variable de referencia a un elemento */ }
+
+     const descriptionRef = useRef<HTMLDivElement>(null);
 
     {/* Datos de los elementos del Select */}
 
@@ -29,7 +33,12 @@ export default function ControlPanel() {
 			
         let idx = parseInt(event.target.value)
         setSelected( idx );
-        alert( idx );
+
+         {/* Modificación de la referencia */}
+
+         if (descriptionRef.current !== null) {
+            descriptionRef.current.innerHTML = (idx >= 0) ? items[idx]["description"] : ""
+        }
 
     };
        
@@ -68,12 +77,16 @@ export default function ControlPanel() {
 
             </Box>
 
-             {/* Muestra la descripción de la variable seleccionada */}
-             <Typography mt={2} component="p" color="text.secondary">
+              {/* Muestra la descripción de la variable seleccionada */}
+
+             {/*<Typography mt={2} component="p" color="text.secondary">
              {
                  (selected >= 0)?items[selected]["description"]:""
              }
-             </Typography>
+             </Typography>*/}
+				
+                <Typography ref={descriptionRef} mt={2} component="p" color="text.secondary" />
+				
 
 
         </Paper>
