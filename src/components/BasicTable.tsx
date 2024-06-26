@@ -7,6 +7,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
+import { useState, useEffect } from 'react';
+
 function createData(
   name: string,
   calories: number,
@@ -25,12 +27,45 @@ const rows = [
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
-export default function BasicTable() {
+{/* 3. Declare la interfaz del prop de entrada */ }
+
+interface Config {
+  rows: Array<object>;
+}
+
+export default function BasicTable(data: Config) {
+  {/* 
+         4. Declare la variable de estado (rows) y la función de actualización (setRows).
+         Use el mismo identificador de la variable con valores fijos (rows)
+     */}
+
+  let [rows, setRows] = useState([])
+
+  {/* 
+         5. Agregue el hook useEffect, controlado por el prop del componente (data), y
+         Dentro del hook, invoque al métdo de actualización con el valor del prop (data.rows).
+     */}
+
+  useEffect(() => {
+
+    (() => {
+
+      setRows(data.rows)
+
+    })()
+
+  }, [data])
+
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
+            {/* Modifique la cabecera de la tabla con los títulos adecuados */}
+
+            <TableCell>Rango de horas</TableCell>
+            <TableCell align="right">Dirección del viento</TableCell>
             <TableCell>Dessert (100g serving)</TableCell>
             <TableCell align="right">Calories</TableCell>
             <TableCell align="right">Fat&nbsp;(g)</TableCell>
@@ -41,16 +76,15 @@ export default function BasicTable() {
         <TableBody>
           {rows.map((row) => (
             <TableRow
+              key={row.rangeHours}
+
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.name}
+              {row.rangeHours}
               </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
+              <TableCell align="right">{row.windDirection}</TableCell>
             </TableRow>
           ))}
         </TableBody>

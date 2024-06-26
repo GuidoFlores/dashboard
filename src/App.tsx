@@ -15,6 +15,12 @@ function App() {
 
   {/* Hook: useEffect */ }
 
+  {/* 
+         1. Agregue la variable de estado (dataTable) y función de actualización (setDataTable).
+     */}
+
+  let [rowsTable, setRowsTable] = useState([])
+
   useEffect(() => {
 
     (async () => {
@@ -92,6 +98,27 @@ function App() {
       {/* Modificación de la variable de estado mediante la función de actualización */ }
 
       setIndicators(indicatorsElements)
+
+      {/* 
+                 2. Procese los resultados de acuerdo con el diseño anterior.
+                 Revise la estructura del documento XML para extraer los datos necesarios. 
+             */}
+
+      let arrayObjects = Array.from(xml.getElementsByTagName("time")).map((timeElement) => {
+
+        let rangeHours = timeElement.getAttribute("from").split("T")[1] + " - " + timeElement.getAttribute("to").split("T")[1]
+
+        let windDirection = timeElement.getElementsByTagName("windDirection")[0].getAttribute("deg") + " " + timeElement.getElementsByTagName("windDirection")[0].getAttribute("code")
+
+        return { "rangeHours": rangeHours, "windDirection": windDirection }
+
+      })
+
+      arrayObjects = arrayObjects.slice(0, 8)
+
+      {/* 3. Actualice de la variable de estado mediante la función de actualización */ }
+
+      setRowsTable(arrayObjects)
     })()
 
   }, [])
@@ -135,9 +162,14 @@ function App() {
       <Grid xs={6} sm={4} md={6} lg={2}>5</Grid>
       <Grid xs={6} sm={4} md={6} lg={2}>6</Grid>
 
-      <Grid xs={12} md={6} lg={9}>
-        <BasicTable />
+      <Grid xs={12} lg={8}>
+
+        {/* 4. Envíe la variable de estado (dataTable) como prop (input) del componente (BasicTable) */}
+
+        <BasicTable rows={rowsTable}></BasicTable>
+
       </Grid>
+
     </Grid><Grid xs={12} lg={10}>
         <WeatherChart></WeatherChart>
       </Grid><Grid xs={12} lg={2}>
