@@ -6,6 +6,7 @@ import BasicTable from './components/BasicTable';
 import WeatherChart from './components/WeatherChart';
 import ControlPanel from './components/ControlPanel';
 import { useEffect, useState } from 'react';
+
 import './App.css'
 
 function App() {
@@ -14,7 +15,6 @@ function App() {
 
   let [indicators, setIndicators] = useState([])
   let [rowsTable, setRowsTable] = useState([])
-  let [chart, setChart] = useState([])
 
   {/* Hook: useEffect */ }
 
