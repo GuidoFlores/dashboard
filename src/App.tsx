@@ -57,16 +57,25 @@ function App() {
              */}
 
       let location = xml.getElementsByTagName("location")[1]
-
       let geobaseid = location.getAttribute("geobaseid")
-      dataToIndicators.push(["Location", "geobaseid", geobaseid])
-
       let latitude = location.getAttribute("latitude")
-      dataToIndicators.push(["Location", "Latitude", latitude])
-
       let longitude = location.getAttribute("longitude")
-      dataToIndicators.push(["Location", "Longitude", longitude]) 
 
+      let temperatureTag = xml.getElementsByTagName("temperature")
+      let temp_max = Number(temperatureTag[0].getAttribute("max"))
+      let temp_min = Number(temperatureTag[0].getAttribute("min"))
+      let temp_prom = (temp_max + temp_min) / 2
+
+      let windDirectionTag = xml.getElementsByTagName("windDirection")
+      let WindDirection = windDirectionTag[0].getAttribute("deg") + "° (" +  windDirectionTag[0].getAttribute("code") + ")"
+      let windSpeedTag = xml.getElementsByTagName("windSpeed")
+      let windSpeed = windSpeedTag[0].getAttribute("mps") + windSpeedTag[0].getAttribute("unit") + " (" + windSpeedTag[0].getAttribute("name") + ")"
+      let windGustTag = xml.getElementsByTagName("windGust")
+      let windGust = windGustTag[0].getAttribute("gust") + windGustTag[0].getAttribute("unit")
+    
+      dataToIndicators.push(["Location", "Latitude: " + latitude , "Longitude: " + longitude, "Geobase: " + geobaseid]) 
+      dataToIndicators.push(["Temperature", "Max: " + temp_max + "°C", "Min: " + temp_min + "°C" , "Avg: " + Math.round(temp_prom) + "°C"])
+      dataToIndicators.push(["Wind", "Direction: " + WindDirection, "Speed: " + windSpeed, "Gust: " + windGust])
       //console.log( dataToIndicators )
 
       {/*let latitud = dataJson.latitude
@@ -85,7 +94,7 @@ function App() {
       {/* Renderice el arreglo de resultados en un arreglo de elementos Indicator */ }
 
       let indicatorsElements = Array.from(dataToIndicators).map(
-        (element) => <Indicator title={element[0]} subtitle={element[1]} value={element[2]} />
+        (element) => <Indicator title={element[0]} subtitle={element[1]} value={element[2]} value2={element[3]}/>
       )
 
       
@@ -134,11 +143,11 @@ function App() {
   return (
     <Grid container spacing={5}>
 
-      <Grid xs={6} lg={2}>
+      <Grid xs={6} lg={3}>
         {indicators[0]}
       </Grid>
       
-      <Grid xs={6} lg={2}>
+      <Grid xs={6} lg={3}>
         {indicators[1]}
       </Grid>
 
@@ -146,9 +155,9 @@ function App() {
         {indicators[2]}
       </Grid>
 
-      <Grid xs={6} sm={4} md={3} lg={6}>
+      {/*<Grid xs={6} sm={4} md={3} lg={6}>
         <Summary></Summary>
-      </Grid>
+      </Grid>*/}
 
       <Grid xs={12} lg={2}>
         <ControlPanel />

@@ -4,7 +4,8 @@ import Paper from '@mui/material/Paper';
 interface Config {
     title?: String;
     subtitle?: String;
-    value: String;
+    value?: String;
+    value2?: String
 }
 
 export default function Indicator(config: Config) {
@@ -19,11 +20,14 @@ export default function Indicator(config: Config) {
         <Typography component="h2" variant="h6" color="primary" gutterBottom>
             {config.title} 
         </Typography>
-        <Typography component="p" variant="h4">
+        <Typography color="text.secondary" sx={{ flex: 1 }}>
+            {config.subtitle}
+        </Typography>
+        <Typography color="text.secondary" sx={{ flex: 1 }}>
             {config.value.toString()}
         </Typography>
         <Typography color="text.secondary" sx={{ flex: 1 }}>
-            {config.subtitle}
+            {config.value2.toString()}
         </Typography>
     </Paper> 
     )
