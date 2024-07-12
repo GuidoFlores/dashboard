@@ -37,7 +37,7 @@ function App() {
 
 
         {/* 5. Request */ }
-        let response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=-2.1962&longitude=-79.8862&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,rain,cloud_cover,uv_index`)
+        let response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=-2.1962&longitude=-79.8862&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,rain,cloud_cover,visibility,uv_index,sunshine_duration,windspeed_1000hPa,winddirection_1000hPa&daily=temperature_2m_max,temperature_2m_min,uv_index_max,uv_index_clear_sky_max&timezone=auto`)
         let dataJson = await response.json();
 
       {/* XML Parser 
@@ -86,9 +86,9 @@ function App() {
       let mappedData = hourlyData.time.map((time, index) => {
         return {
             "time": time.split("T")[1],
-            "humidity": hourlyData.relative_humidity_2m[index] + "%",
-            "precipitation": hourlyData.precipitation_probability[index] / 100,
-            "clouds": hourlyData.cloud_cover[index],
+            "uv": hourlyData.uv_index[index],
+            "windSpeed": hourlyData.windspeed_1000hPa[index] + " " + "km/h",
+            "temperature": hourlyData.temperature_2m[index] + " " + "°C"
         };
     });
 

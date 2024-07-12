@@ -46,9 +46,9 @@ export default function BasicTable(data: Config) {
         <TableHead>
           <TableRow>
             <TableCell align="center">Hora</TableCell>
-            <TableCell align="center">Nubosidad</TableCell>
-            <TableCell align="center">Precipitación</TableCell>
-            <TableCell align="center">Humedad</TableCell>
+            <TableCell align="center">UV</TableCell>
+            <TableCell align="center">Velocidad del viento</TableCell>
+            <TableCell align="center">Temperatura_2m</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -60,9 +60,9 @@ export default function BasicTable(data: Config) {
               <TableCell align="center" component="th" scope="row">
                 {row.time}
               </TableCell>
-              <TableCell align="center">{row.clouds}</TableCell>
-              <TableCell align="center">{row.precipitation}</TableCell>
-              <TableCell align="center">{row.humidity}</TableCell>
+              <TableCell align="center">{row.uv}</TableCell>
+              <TableCell align="center">{row.windSpeed}</TableCell>
+              <TableCell align="center">{row.temperature}</TableCell>
             </TableRow>
           ))}
         </TableBody>
