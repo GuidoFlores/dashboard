@@ -15,10 +15,17 @@ function App() {
 
   let [indicators, setIndicators] = useState([])
   let [rowsTable, setRowsTable] = useState([])
+ 
 
   {/* Hook: useEffect */ }
 
   {/* Función para el efecto secundario a ejecutar y Arreglo de dependencias */ }
+
+  {/*useEffect(() => {
+    (async () => {
+
+    })()
+  },[])*/}
 
 
   useEffect(() => {
@@ -27,51 +34,16 @@ function App() {
 
       {/* 1. Comente el código anterior con el Request */ }
 
-      // {/* Request */ }
 
-      // let API_KEY = "AQUÍ VA SU API KEY DE OPENWEATHERMAP"
-      // let response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=Guayaquil&mode=xml&appid=${API_KEY}`)
-      // let savedTextXML = await response.text();
-
-
-      {/* 2. Del LocalStorage, obtiene el valor de las claves openWeatherMap y expiringTime */ }
-
-      let savedTextXML = localStorage.getItem("openWeatherMap")
-      let expiringTime = localStorage.getItem("expiringTime")
-
-      {/* 3. Obtenga la estampa de tiempo actual */ }
-
-      let nowTime = (new Date()).getTime();
-
-      {/* 4. Realiza la petición asicrónica cuando: 
-                 (1) La estampa de tiempo de expiración (expiringTime) es nula, o  
-                 (2) La estampa de tiempo actual es mayor al tiempo de expiración */}
-
-      if (expiringTime === null || nowTime > parseInt(expiringTime)) {
 
         {/* 5. Request */ }
+        let response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=-2.1962&longitude=-79.8862&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,rain,cloud_cover,uv_index`)
+        let dataJson = await response.json();
 
-        let API_KEY = "b219edf6dd38676f8fcbfb53deb5e83e"
-        let response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=Guayaquil&mode=xml&appid=${API_KEY}`)
-        savedTextXML = await response.text();
-
-
-        {/* 6. Diferencia de tiempo */ }
-
-        let hours = 1
-        let delay = hours * 3600000
-
-
-        {/* 7. En el LocalStorage, almacena texto en la clave openWeatherMap y la estampa de tiempo de expiración */ }
-
-        localStorage.setItem("openWeatherMap", savedTextXML)
-        localStorage.setItem("expiringTime", (nowTime + delay).toString())
-      }
-
-      {/* XML Parser */ }
+      {/* XML Parser 
 
       const parser = new DOMParser();
-      const xml = parser.parseFromString(savedTextXML, "application/xml");
+      const xml = parser.parseFromString(savedTextXML, "application/xml");*/}
 
       {/* Arreglo para agregar los resultados */ }
 
@@ -82,7 +54,7 @@ function App() {
                  en el arreglo de resultados
              */}
 
-      let location = xml.getElementsByTagName("location")[1]
+      {/*let location = xml.getElementsByTagName("location")[1]
 
       let geobaseid = location.getAttribute("geobaseid")
       dataToIndicators.push(["Location", "geobaseid", geobaseid])
@@ -91,9 +63,14 @@ function App() {
       dataToIndicators.push(["Location", "Latitude", latitude])
 
       let longitude = location.getAttribute("longitude")
-      dataToIndicators.push(["Location", "Longitude", longitude])
+      dataToIndicators.push(["Location", "Longitude", longitude]) */}
 
       //console.log( dataToIndicators )
+
+      let latitud = dataJson.latitude
+      dataToIndicators.push(["Location", "Latitude", latitud])
+      let longitud = dataJson.longitude
+      dataToIndicators.push(["Location", "Longitude", longitud])
 
       {/* Renderice el arreglo de resultados en un arreglo de elementos Indicator */ }
 
@@ -101,20 +78,42 @@ function App() {
         (element) => <Indicator title={element[0]} subtitle={element[1]} value={element[2]} />
       )
 
-      let arrayObjects = Array.from(xml.getElementsByTagName("time")).map((timeElement) => {
+      
+      let hourlyData = dataJson.hourly;
+
+      
+
+      let mappedData = hourlyData.time.map((time, index) => {
+        return {
+            "time": time.split("T")[1],
+            "humidity": hourlyData.relative_humidity_2m[index] + "%",
+            "precipitation": hourlyData.precipitation_probability[index] / 100,
+            "clouds": hourlyData.cloud_cover[index],
+        };
+    });
+
+
+      {/*let arrayObjects = Array.from(xml.getElementsByTagName("time")).map((timeElement) => {
 
         let rangeHours = timeElement.getAttribute("from").split("T")[1] + " - " + timeElement.getAttribute("to").split("T")[1]
 
         let windDirection = timeElement.getElementsByTagName("windDirection")[0].getAttribute("deg") + " " + timeElement.getElementsByTagName("windDirection")[0].getAttribute("code")
 
-        return { "rangeHours": rangeHours, "windDirection": windDirection }
+        let clouds = timeElement.getElementsByTagName("clouds")[0].getAttribute("value")
 
-      })
+        let precipitation = timeElement.getElementsByTagName("precipitation")[0].getAttribute("probability")
 
-      arrayObjects = arrayObjects.slice(0, 8)
+        let humidity = timeElement.getElementsByTagName("humidity")[0].getAttribute("value") + timeElement.getElementsByTagName("humidity")[0].getAttribute("unit")
 
-      setRowsTable(arrayObjects)
+        return { "rangeHours": rangeHours, "windDirection": windDirection , "clouds": clouds , "precipitation": precipitation , "humidity": humidity}
+
+      })*/}
+
+      {/*arrayObjects = arrayObjects.slice(0, 8)*/}
+
+      setRowsTable(mappedData)
       setIndicators(indicatorsElements)
+     
 
     })()
 

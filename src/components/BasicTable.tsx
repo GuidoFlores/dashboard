@@ -45,8 +45,10 @@ export default function BasicTable(data: Config) {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Rango De horas</TableCell>
-            <TableCell align="right">Dirección del viento</TableCell>
+            <TableCell align="center">Hora</TableCell>
+            <TableCell align="center">Nubosidad</TableCell>
+            <TableCell align="center">Precipitación</TableCell>
+            <TableCell align="center">Humedad</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -55,10 +57,12 @@ export default function BasicTable(data: Config) {
               key={row.rangeHours}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
-                {row.rangeHours}
+              <TableCell align="center" component="th" scope="row">
+                {row.time}
               </TableCell>
-              <TableCell align="right">{row.windDirection}</TableCell>
+              <TableCell align="center">{row.clouds}</TableCell>
+              <TableCell align="center">{row.precipitation}</TableCell>
+              <TableCell align="center">{row.humidity}</TableCell>
             </TableRow>
           ))}
         </TableBody>
