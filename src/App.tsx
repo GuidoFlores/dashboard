@@ -35,15 +35,17 @@ function App() {
       {/* 1. Comente el código anterior con el Request */ }
 
 
+      let API_KEY = "b219edf6dd38676f8fcbfb53deb5e83e"
+      let responseOpenWeather = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=Guayaquil&mode=xml&appid=${API_KEY}`)
+      let savedTextXML = await responseOpenWeather.text();
 
-        {/* 5. Request */ }
-        let response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=-2.1962&longitude=-79.8862&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,rain,cloud_cover,visibility,uv_index,sunshine_duration,windspeed_1000hPa,winddirection_1000hPa&daily=temperature_2m_max,temperature_2m_min,uv_index_max,uv_index_clear_sky_max&timezone=auto&forecast_days=1`)
-        let dataJson = await response.json();
+      let responseOpenMeteo = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=-2.1962&longitude=-79.8862&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,rain,cloud_cover,visibility,uv_index,sunshine_duration,windspeed_1000hPa,winddirection_1000hPa&daily=temperature_2m_max,temperature_2m_min,uv_index_max,uv_index_clear_sky_max&timezone=auto&forecast_days=1`)
+      let dataJson = await responseOpenMeteo.json();
 
-      {/* XML Parser 
+       {/*XML Parser*/} 
 
       const parser = new DOMParser();
-      const xml = parser.parseFromString(savedTextXML, "application/xml");*/}
+      const xml = parser.parseFromString(savedTextXML, "application/xml");
 
       {/* Arreglo para agregar los resultados */ }
 
@@ -54,7 +56,7 @@ function App() {
                  en el arreglo de resultados
              */}
 
-      {/*let location = xml.getElementsByTagName("location")[1]
+      let location = xml.getElementsByTagName("location")[1]
 
       let geobaseid = location.getAttribute("geobaseid")
       dataToIndicators.push(["Location", "geobaseid", geobaseid])
@@ -63,11 +65,11 @@ function App() {
       dataToIndicators.push(["Location", "Latitude", latitude])
 
       let longitude = location.getAttribute("longitude")
-      dataToIndicators.push(["Location", "Longitude", longitude]) */}
+      dataToIndicators.push(["Location", "Longitude", longitude]) 
 
       //console.log( dataToIndicators )
 
-      let latitud = dataJson.latitude
+      {/*let latitud = dataJson.latitude
       dataToIndicators.push(["Location", "Latitude", latitud])
       let longitud = dataJson.longitude
       dataToIndicators.push(["Location", "Longitude", longitud])
@@ -78,7 +80,7 @@ function App() {
       let temp_prom = (temp_max + temp_min ) / 2
 
 
-      dataToIndicators.push(["Temperature", "Temperatura promedio del día", Math.round(temp_prom) + "°C"])
+      dataToIndicators.push(["Temperature", "Temperatura promedio del día", Math.round(temp_prom) + "°C"])*/}
 
       {/* Renderice el arreglo de resultados en un arreglo de elementos Indicator */ }
 
