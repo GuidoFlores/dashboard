@@ -58,8 +58,11 @@ function App() {
 
       let temperatureTag = xml.getElementsByTagName("temperature")
       let temp_max = Number(temperatureTag[0].getAttribute("max"))
+      let temp_max_c = Math.round(temp_max - 273.15)
       let temp_min = Number(temperatureTag[0].getAttribute("min"))
+      let temp_min_c = Math.round(temp_min - 273.15)
       let temp_prom = (temp_max + temp_min) / 2
+      let temp_prom_c = Math.round(temp_prom - 273.15)
 
       let windDirectionTag = xml.getElementsByTagName("windDirection")
       let WindDirection = windDirectionTag[0].getAttribute("deg") + "° (" + windDirectionTag[0].getAttribute("code") + ")"
@@ -74,7 +77,7 @@ function App() {
       let timezone = Number(timezoneTag) / 3600
 
       dataToIndicators.push(["Location", "Latitude: " + latitude, "Longitude: " + longitude, "Geobase: " + geobaseid])
-      dataToIndicators.push(["Temperature", "Max: " + temp_max + "°C", "Min: " + temp_min + "°C", "Avg: " + Math.round(temp_prom) + "°C"])
+      dataToIndicators.push(["Temperature", "Max: " + temp_max_c + "°C", "Min: " + temp_min_c + "°C", "Avg: " + Math.round(temp_prom_c) + "°C"])
       dataToIndicators.push(["Wind", "Direction: " + WindDirection, "Speed: " + windSpeed, "Gust: " + windGust])
       dataToIndicators.push(["Info", "City: " + cityName, "Country: " + country, "Time zone: " + "UTC" + timezone])
 
