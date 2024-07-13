@@ -15,17 +15,7 @@ interface Config {
 
 export default function BasicTable(data: Config) {
 
-  {/*   
-         4. Declare la variable de estado (rows) y la función de actualización (setRows).
-         Use el mismo identificador de la variable con valores fijos (rows)
-     */}
-
      let [rows, setRows] = useState([])
-		
-     {/* 
-         5. Agregue el hook useEffect, controlado por el prop del componente (data), y
-         Dentro del hook, invoque al métdo de actualización con el valor del prop (data.rows).
-     */}
 
      useEffect( () => {
 
