@@ -2,7 +2,7 @@ import { Chart } from "react-google-charts";
 import Paper from '@mui/material/Paper';
 import { useEffect, useState } from "react";
 
-export default function WeatherChart() {
+export default function WeatherChart({ selectedVariable }) {
     const [values, setValues] = useState([["Hora", "Precipitación", "Humedad", "Nubosidad"]]);
 
     useEffect(() => {
@@ -13,15 +13,15 @@ export default function WeatherChart() {
 
                 const times = data.hourly.time;
                 const precipitation = data.hourly.precipitation_probability;
-                const humidity = data.hourly.relative_humidity_2m; 
-                const cloudCover = data.hourly.cloud_cover; 
+                const humidity = data.hourly.relative_humidity_2m;
+                const cloudCover = data.hourly.cloud_cover;
 
                 const formattedData = times.map((time, index) => {
                     const hora = new Date(time).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
                     return [hora, precipitation[index], humidity[index], cloudCover[index]];
                 });
 
-                setValues(prevValues => [...prevValues, ...formattedData]);
+                setValues([["Hora", "Precipitación", "Humedad", "Nubosidad"], ...formattedData]);
             } catch (error) {
                 console.error('Error fetching the data', error);
             }
@@ -29,6 +29,12 @@ export default function WeatherChart() {
 
         fetchData();
     }, []);
+
+    const filteredData = () => {
+        if (selectedVariable === -1) return values;
+        const variableIndex = selectedVariable + 1; 
+        return values.map(row => row.filter((_, index) => index === 0 || index === variableIndex));
+    };
 
     const options = {
         title: "Precipitación, Humedad y Nubosidad vs Hora",
@@ -46,11 +52,11 @@ export default function WeatherChart() {
         >
             <Chart
                 chartType="LineChart"
-                data={values}
+                data={filteredData()}
                 width="100%"
                 height="400px"
                 options={options}
             />
         </Paper>
-    )
+    );
 }
