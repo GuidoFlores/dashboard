@@ -31,8 +31,8 @@ export default function BasicTable(data: Config) {
      {/* JSX */}
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+    <TableContainer component={Paper} style={{ maxHeight: 400, overflow: 'auto' }}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table" stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell align="center">Hora</TableCell>
